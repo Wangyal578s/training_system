@@ -1,0 +1,285 @@
+/* ===== GLOBAL STYLES ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding-top: 120px; /* space for navbar */
+    padding-bottom: 90px; /* space for footer */
+    background-color: #e6f2ff;
+    background-image: url('../images/bank_logo.png');
+    background-repeat: no-repeat;
+    background-position: center 90px;
+    background-size: 260px auto;
+}
+
+/* ===== FIXED & POLISHED NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0d6efd;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px; /* increased side padding for breathing space */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    overflow-x: auto; /* scrolls if content overflows */
+    scrollbar-width: none; /* hide scrollbar for Firefox */
+    flex-wrap: nowrap;
+}
+
+.navbar::-webkit-scrollbar {
+    display: none; /* hide scrollbar for Chrome/Safari */
+}
+
+/* Left Section (Logo + Title) */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.nav-logo {
+    width: 40px;
+    height: auto;
+}
+
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Right Section (Links) */
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* wider gap to avoid crowding */
+    margin-left: auto;
+    margin-right: 20px; /* prevent edge clipping */
+    flex-shrink: 0;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    padding: 8px 16px; /* slightly larger padding for clarity */
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.navbar-links a:hover {
+    background-color: #0b5ed7;
+    color: #ffcc00;
+}
+
+/* ===== RESPONSIVE NAVBAR ===== */
+@media (max-width: 900px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 12px 15px;
+    }
+
+    .navbar-left {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .navbar-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin: 0 auto;
+    }
+
+    .navbar-links a {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+/* ===== FIXED HEADER LOGO ===== */
+.header-logo {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    width: 95px;
+    height: auto;
+    z-index: 1000;
+}
+
+/* ===== CONTAINER ===== */
+.container, .page-wrapper {
+    background-color: rgba(255, 255, 255, 0.97);
+    padding: 45px 50px;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+}
+
+/* ===== HEADINGS ===== */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+/* Optional decorative line */
+h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #0d6efd;
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+/* ===== FORM LAYOUT ===== */
+form {
+    max-width: 750px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px 28px;
+    align-items: center;
+    text-align: left;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    text-align: left;
+}
+
+/* Inputs & selects */
+input, select {
+    padding: 10px 12px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+}
+
+/* ===== SELECT2 FIX ===== */
+.select2-container {
+    width: 100% !important;
+}
+.select2-container--default .select2-selection--single {
+    height: 42px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 40px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    grid-column: 1 / -1;
+    justify-self: center;
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 30px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #0b5ed7;
+}
+
+/* Clear button variation */
+.clear-btn {
+    background-color: #6c757d;
+    margin-left: 10px;
+}
+.clear-btn:hover {
+    background-color: #5a6268;
+}
+
+/* ===== LINKS AS BUTTONS ===== */
+ul {
+    padding-left: 0;
+}
+ul li {
+    list-style: none;
+}
+ul li a {
+    display: inline-block;
+    padding: 12px 28px;
+    margin: 12px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+ul li a:hover {
+    background-color: #0b5ed7;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+th {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 12px;
+}
+td {
+    padding: 10px;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: rgba(13, 110, 253, 0.96);
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+}
+
+/* ===== RESPONSIVE FIXES ===== */
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    label {
+        text-align: left;
+    }
+
+    .container, .page-wrapper {
+        padding: 30px 25px;
+    }
+}

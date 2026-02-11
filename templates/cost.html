@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Training Cost Prediction</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<!-- ✅ Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <img src="/static/images/logo.png" alt="BOB Logo" class="nav-logo">
+        <span class="nav-title">BOB HR Training System</span>
+    </div>
+    <div class="navbar-links">
+        <a href="/">Home</a>
+        <a href="/recommend">Recommend Training</a>
+        <a href="/cost">Cost Predict</a>
+    </div>
+</nav>
+
+<body>
+    <div class="container">
+
+        <h2>Training Cost Prediction</h2>
+
+        <form id="costForm" method="post">
+
+            <label for="training_type">Training Type</label>
+            <select name="training_type" required>
+                <option value="">--Select--</option>
+                <option value="in-house">In-House</option>
+                <option value="ex-country india">Ex-Country India</option>
+                <option value="ex-country third countries">Ex-Country Third Countries</option>
+                <option value="in-country">In-Country</option>
+                <option value="online">Online</option>
+            </select>
+
+            <label for="training_category">Training Category</label>
+            <select name="training_category" required>
+                <option value="">--Select--</option>
+                <option value="Sttp">Sttp</option>
+                <option value="Sensitization">Sensitization</option>
+                <option value="Sttp Other Agency Funded">Sttp Other Agency Funded</option>
+                <option value="Olttp">Olttp</option>
+                <option value="Conference/Seminar">Conference/Seminar</option>
+                <option value="Osttp">Osttp</option>
+                <option value="Study Visit">Study Visit</option>
+            </select>
+
+            <label for="training_institute">Institute</label>
+            <select name="training_institute" required>
+                <option value="">--Select--</option>
+                <option value="Bob">Bob</option>
+                <option value="Rma">Rma</option>
+                <option value="Fiti">Fiti</option>
+                <option value="Sba">Sba</option>
+                <option value="Anti-Corruption Commission (Acc)">Anti-Corruption Commission (Acc)</option>
+                <option value="Pathumthani University">Pathumthani University</option>
+                <option value="Coursera">Coursera</option>
+                <option value="Govtech">Govtech</option>
+            </select>
+
+            <label for="development_type">Development Type</label>
+            <select name="development_type" required>
+                <option value="">--Select--</option>
+                <option value="technical and functional development">Technical and Functional Development</option>
+                <option value="leadership and behavioral development">Leadership and Behavioral Development</option>
+                <option value="exposure and networking development">Exposure and Networking Development</option>
+                <option value="regulatory and compliance development">Regulatory and Compliance Development</option>
+                <option value="digital and innovation development">Digital and Innovation Development</option>
+            </select>
+
+            <label for="training_country">Country</label>
+            <select name="training_country" required>
+                <option value="">--Select--</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="India">India</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Nepal">Nepal</option>
+                <option value="UAE">UAE</option>
+                <option value="Taiwan">Taiwan</option>
+            </select>
+
+            <label for="duration_days">Duration (Days)</label>
+            <input name="duration_days" type="number" min="1" required>
+
+            <label for="duration_hrs.">Duration (Hours)</label>
+            <input name="duration_hrs." type="number" min="1" required>
+
+            <div class="button-group">
+                <button type="submit">Predict Cost</button>
+                <button type="button" class="clear-btn" onclick="clearCostForm()">Clear</button>
+            </div>
+
+        </form>
+
+        <!-- Spinner -->
+        <div id="spinner" style="display:none; text-align:center; margin-top:20px;">
+            🔄 Predicting cost...
+        </div>
+
+        <!-- Success Alert -->
+        <div id="successAlert" style="display:none; background:#d4edda; color:#155724; padding:12px; border-radius:6px; margin-top:20px; text-align:center; font-weight:600;">
+            ✅ Cost predicted successfully!
+        </div>
+
+        <!-- Result -->
+        <div id="predictionResult" style="margin-top:20px; font-size:18px; font-weight:bold;"></div>
+
+    </div>
+
+    <footer>
+    © BOB since 1968 | Developed by <strong>Sonam Wangyal Tshewang</strong>, HR Intern (2025)
+    </footer>
+
+<script>
+$(document).ready(function(){
+
+    $("#costForm").submit(function(e){
+        e.preventDefault();
+
+        $("#spinner").show();
+        $("#successAlert").hide();
+        $("#predictionResult").html("");
+
+        $.ajax({
+            type: "POST",
+            url: "/predict_cost",
+            data: $(this).serialize(),
+
+            success: function(response){
+                $("#spinner").hide();
+
+                if(response.status === "success"){
+                    $("#successAlert").fadeIn();
+
+                    $("#predictionResult").html(
+                        "Estimated Total Cost: " + parseFloat(response.prediction).toFixed(2)
+                    );
+                    // ❌ Removed auto-reset so fields stay
+                }
+            },
+
+            error: function(){
+                $("#spinner").hide();
+                alert("Something went wrong while predicting cost.");
+            }
+        });
+
+    });
+});
+
+// Manual clear function
+function clearCostForm() {
+    $("#costForm")[0].reset();
+    $("#predictionResult").html("");
+    $("#successAlert").hide();
+}
+</script>
+
+</body>
+</html>

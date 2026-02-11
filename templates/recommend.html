@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Training Recommendation</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+</head>
+<!-- ✅ Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <img src="/static/images/logo.png" alt="BOB Logo" class="nav-logo">
+        <span class="nav-title">BOB HR Training System</span>
+    </div>
+    <div class="navbar-links">
+        <a href="/">Home</a>
+        <a href="/recommend">Recommend Training</a>
+        <a href="/cost">Cost Predict</a>
+    </div>
+</nav>
+
+<body>
+<div class="page-wrapper">
+<h2>Training Recommendation</h2>
+
+<form method="post">
+
+<!-- Grade -->
+<label>Grade:</label>
+<select name="grade" id="grade" required>
+    <option value="">--Select--</option>
+    {% for g in range(0, 16) %}
+    <option value="{{ g }}" {% if request.form.get('grade') == g|string %}selected{% endif %}>
+        {{ g }}
+    </option>
+    {% endfor %}
+</select>
+
+
+<!-- Designation -->
+<label>Designation:</label>
+<select name="designation" id="designation" required>
+<option value="">--Select--</option>
+{% for option in [
+"director","customer relations manager","general green banking officer","section manager","loan officer",
+"banking officer","loan assistant","general project finance officer","senior credit officer","credit officer",
+"senior loan officer","loan manager","hr officer","general manager","loan assistant/atm custodian",
+"branch manager","trade finance officer","chief","extension branch manager","chief executive officer",
+"compliance officer","admin officer","database administrator","senior network assistant","database specialist",
+"network operations center technician","system administrator","it assistant","information security officer",
+"senior internal auditor","loan officer/atm custodian","banking assistant","senior loan assistant",
+"atm custodian, assistant","atm custodian","general adc officer","senior cards officer","cards officer",
+"it officer","treasury and investement officer","financial accounting officer","graphic designer",
+"marketing officer","zimpon womgma (board member)","legal officer","senior banking officer",
+"contact center agent","administration officer","epayment assistant","general banking officer",
+"branch operations officer","assistant mbob officer","mbob assistant","procurement officer",
+"procurement assistant","senior record keeper","operations manager","atm custodian, officer",
+"international banking assistant","senior forex officer","dy. head branch operations officer",
+"ex- branch manager","senior cbs assistant","cbs support officer","contact center supervisor",
+"senior cc team leader","dy. head corporate strategy officer","cs officer","mbob officer",
+"senior adc assistant","junior mbob officer","credit review officer","dy. head internal auditor",
+"is officer","senior procurement officer","dy. head application and soft ware officer","cbs officer",
+"dy. head cbs officer","general mis officer","application and soft ware officer",
+"senior international banking officer","focal person of consumer protection","swift assistant",
+"swift officer","forex assistant","record keeper","risk officer","international banking officer",
+"recovery officer","general reconciliation officer","junior adc officer","site supervisor",
+"reconciliation officer","esp","project finance officer","crv officer","senior compliance offcier",
+"animator","junior officer pi","company secretary"
+] %}
+<option value="{{ option }}" {% if request.form.get('designation') == option %}selected{% endif %}>
+{{ option|title }}
+</option>
+{% endfor %}
+</select>
+
+<!-- Section/Branch -->
+<label>Section/Branch:</label>
+<select name="section_branch" id="section_branch" required>
+<option value="">--Select--</option>
+{% for option in [
+"credit & operations department","customer relationship & valuation","green banking","legal & recovery",
+"motithang branch","paro branch","babesa branch","project finance","retail credit","samtse branch",
+"thimphu main branch","phuentsholing main branch","credit officer","loan manager",
+"senior loan officer","loan officer","banking officer","loan assistant",
+"human resources management","pmb","babesa","crv","green","nganglam","paro","punakha","retail",
+"samtse","tmb","trade finance","wangdue","credit division",
+"alternative delivery channels section","hr development section",
+"data center, network & hardware section","gedu branch","wangdue branch",
+"samdrupcholing branch","tashiyangtse branch","dagana branch",
+"dewathang branch","dagapela branch","dorokha branch","lhuentse branch",
+"wamrong branch","zhemgang branch","office of the ceo","operations",
+"ict","compliance aml/cft","admin & procurement",
+"branch operations & retail banking"
+] %}
+<option value="{{ option }}" {% if request.form.get('section_branch') == option %}selected{% endif %}>
+{{ option|title }}
+</option>
+{% endfor %}
+</select>
+
+<!-- Division -->
+<label>Division:</label>
+<select name="division" id="division" required>
+<option value="">--Select--</option>
+{% for option in [
+"credit","operations","corporate services","digital banking",
+"ict","office of the ceo","internal audit division",
+"finance","corporate strategy office","board member"
+] %}
+<option value="{{ option }}" {% if request.form.get('division') == option %}selected{% endif %}>
+{{ option|title }}
+</option>
+{% endfor %}
+</select>
+
+<!-- Department -->
+<label>Department:</label>
+<select name="department" id="department" required>
+<option value="">--Select--</option>
+{% for option in [
+"credit & operations","corporate services",
+"ict & digital banking","office of the ceo",
+"operations division","ict division","board member"
+] %}
+<option value="{{ option }}" {% if request.form.get('department') == option %}selected{% endif %}>
+{{ option|title }}
+</option>
+{% endfor %}
+</select>
+
+<!-- Employee Group Type -->
+<label>Employee Group Type:</label>
+<select name="employee_group_type" id="employee_group_type" required>
+<option value="">--Select--</option>
+{% for option in ["managerial","assistant","board member","support"] %}
+<option value="{{ option }}" {% if request.form.get('employee_group_type') == option %}selected{% endif %}>
+{{ option|title }}
+</option>
+{% endfor %}
+</select>
+
+<div class="button-group">
+<button type="submit">Get Recommendations</button>
+<button type="button" class="clear-btn" id="clearForm">Clear Form</button>
+</div>
+
+</form>
+
+{% if results %}
+<h3>Top Recommended Trainings</h3>
+<table border="1">
+<tr>
+<th>Title</th>
+<th>Category</th>
+<th>Type</th>
+<th>Institute</th>
+<th>Duration (Days)</th>
+<th>Predicted Cost</th>
+<th>Impact Probability</th>
+</tr>
+{% for row in results %}
+<tr>
+<td>{{ row.training_title }}</td>
+<td>{{ row.training_category }}</td>
+<td>{{ row.training_type }}</td>
+<td>{{ row.training_institute }}</td>
+<td>{{ row.duration_days }}</td>
+<td>{{ "%.2f"|format(row.predicted_cost) }}</td>
+<td>{{ "%.2f"|format(row.predicted_effectiveness_prob) }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+</div>
+
+<script>
+$(document).ready(function() {
+
+$('#designation, #section_branch, #division, #department, #employee_group_type').select2({
+    placeholder: "--Select--",
+    allowClear: true,
+    width: '100%'
+});
+
+$("#clearForm").click(function() {
+    $("form")[0].reset();
+    $('#designation, #section_branch, #division, #department, #employee_group_type')
+        .val(null)
+        .trigger('change');
+});
+});
+</script>
+
+<footer>
+    © BOB since 1968 | Developed by <strong>Sonam Wangyal Tshewang</strong>, HR Intern (2025)
+</footer>
+
+
+</body>
+</html>
